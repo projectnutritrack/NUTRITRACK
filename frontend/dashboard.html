@@ -23,7 +23,7 @@
         
         /* Header Styles */
         header {
-            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            background-color:#5daf61;
             color: white;
             padding: 20px 40px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -123,7 +123,7 @@
         }
         
         .sidebar h2 {
-            color: #2E7D32;
+            color: #5daf61;
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 2px solid #e8f5e9;
@@ -146,13 +146,13 @@
         }
         
         .sidebar-menu li:hover {
-            color: #2E7D32;
+            color: #5daf61;
         }
         
         .sidebar-menu i {
             width: 24px;
             text-align: center;
-            color: #2E7D32;
+            color: inherit;
         }
         
         /* Main Content Area */
@@ -174,7 +174,7 @@
         }
         
         .date-section h2 {
-            color: #2E7D32;
+            color: #5daf61;
             font-size: 28px;
         }
         
@@ -202,7 +202,7 @@
         .stat-icon {
             width: 60px;
             height: 60px;
-            background: #e8f5e9;
+            background: #ffffff;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -211,14 +211,14 @@
         }
         
         .stat-icon i {
-            font-size: 24px;
-            color: #2E7D32;
+            font-size: 35px;
+            color: #5daf61;
         }
         
         .stat-value {
             font-size: 32px;
             font-weight: 700;
-            color: #2E7D32;
+            color: #5daf61;
             margin-bottom: 5px;
         }
         
@@ -250,7 +250,7 @@
         
         .chart-header h3 {
             font-size: 20px;
-            color: #2E7D32;
+            color: #5daf61;
         }
         
         .chart-placeholder {
@@ -260,7 +260,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #2E7D32;
+            color: #5daf61;
             font-weight: 600;
         }
         
@@ -281,11 +281,11 @@
         
         .meals-header h3 {
             font-size: 20px;
-            color: #2E7D32;
+            color: #5daf61;
         }
         
         .view-all {
-            color: #2E7D32;
+            color: #5daf61;
             font-weight: 600;
             text-decoration: none;
         }
@@ -302,7 +302,7 @@
         }
         
         .meals-table th {
-            color: #2E7D32;
+            color: #5daf61;
             font-weight: 600;
         }
         
@@ -320,7 +320,7 @@
         
         .breakfast {
             background: #e8f5e9;
-            color: #2E7D32;
+            color: #5daf61;
         }
         
         .lunch {
@@ -445,11 +445,11 @@
         <div class="sidebar">
             <h2>Weekly Overview</h2>
             <ul class="sidebar-menu">
-                <li><i class="fas fa-chart-line"></i> Weekly Progress</li>
-                <li><i class="fas fa-weight"></i> Weight Tracking</li>
-                <li><i class="fas fa-trophy"></i> Achievements</li>
-                <li><i class="fas fa-bullseye"></i> Goals</li>
-                <li><i class="fas fa-history"></i> Meal History</li>
+                <li><i class="fas fa-chart-line" style="color: rgb(253, 165, 0);"></i> Weekly Progress</li>
+                <li><i class="fas fa-weight" style="color: black;"></i> Weight Tracking</li>
+                <li><i class="fas fa-trophy" style="color: rgb(255, 230, 1);"></i> Achievements</li>
+                <li><i class="fas fa-bullseye" style="color: red;"></i> Goals</li>
+                <li><i class="fas fa-history" style="color: #9a9a9a;"></i> Meal History</li>
             </ul>
         </div>
         
@@ -465,7 +465,7 @@
             <div class="stats-overview">
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-fire"></i>
+                        <i class="fas fa-fire" style="color: orange;"></i>
                     </div>
                     <div class="stat-value">1,250</div>
                     <div class="stat-label">Calories Today</div>
@@ -473,7 +473,7 @@
                 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-apple-alt"></i>
+                        <i class="fas fa-apple-alt" style="color: rgb(255, 98, 98);"></i>
                     </div>
                     <div class="stat-value">78%</div>
                     <div class="stat-label">Nutrition Score</div>
@@ -481,7 +481,7 @@
                 
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle" style="color: rgb(74, 73, 73);"></i>
                     </div>
                     <div class="stat-value">12</div>
                     <div class="stat-label">Goals Completed</div>
@@ -562,9 +562,6 @@
         </div>
     </div>
     
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2023 NutriTrack - Nutrition Tracking App. All rights reserved.</p>
-    </footer>
+    
 </body>
 </html>
