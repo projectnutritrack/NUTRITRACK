@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriTrack - Food Predictor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8faf8;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+         .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+        
+        .logo-img img {
+            width: 100%;
+            height: auto;
+        }
+        
+        
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav li {
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+        
+        nav li.active, nav li:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-actions button {
+            background: white;
+            color: #2E7D32;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-actions button:hover {
+            background: #e8f5e9;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content Styles */
+        .predictor-container {
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            gap: 30px;
+        }
+        
+        /* Prediction Input Section */
+        .prediction-input {
+            flex: 1;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .prediction-input h2 {
+            color: #2E7D32;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8f5e9;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2E7D32;
+        }
+        
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e8f5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            border-color: #2E7D32;
+            outline: none;
+        }
+        
+        .input-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        
+        .predict-button {
+            background: #2E7D32;
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .predict-button:hover {
+            background: #1B5E20;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        /* Prediction Results Section */
+        .prediction-results {
+            flex: 1;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .prediction-results h2 {
+            color: #2E7D32;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8f5e9;
+        }
+        
+        .results-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            text-align: center;
+            color: #888;
+        }
+        
+        .results-placeholder i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #e8f5e9;
+        }
+        
+        .results-placeholder p {
+            font-size: 18px;
+            max-width: 300px;
+        }
+        
+        .food-result {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .food-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        
+        .food-details {
+            margin-bottom: 25px;
+        }
+        
+        .food-name {
+            font-size: 24px;
+            color: #2E7D32;
+            margin-bottom: 10px;
+        }
+        
+        .food-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .nutrition-facts {
+            background: #f8faf8;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .nutrition-facts h4 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e8f5e9;
+        }
+        
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e8f5e9;
+        }
+        
+        .nutrition-item:last-child {
+            border-bottom: none;
+        }
+        
+        .add-to-meal-button {
+            background: #2E7D32;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .add-to-meal-button:hover {
+            background: #1B5E20;
+        }
+        
+        /* Footer Navigation */
+        .footer-nav {
+            background: #2E7D32;
+            color: white;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .footer-nav h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .footer-nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-nav li {
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+        
+        .footer-nav a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .footer-nav li:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .predictor-container {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer-nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .predictor-container {
+                padding: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav li {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .user-actions button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .prediction-input, .prediction-results {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+                <div class="logo">
+            <div class="logo-img">
+                <img src="logobig-removebg.png" alt="NutriTrack Logo">
+            </div>
+            <h1>NUTRITRACK</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li onclick="window.location.href='home.html'">Home</li>
+                <li onclick="window.location.href='predictor.html'">Predictor</li>
+                <li onclick="window.location.href='dashboard.html'">Dashboard</li>
+                <li>Tips</li>
+            </ul>
+        </nav>
+        
+        <div class="user-actions">
+            <button><i class="fas fa-user"></i> My Profile</button>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="predictor-container">
+        <!-- Prediction Input Section -->
+        <div class="prediction-input">
+            <h2>Food Predictor</h2>
+            
+            <div class="input-group">
+                <label for="food-name">Food Name</label>
+                <input type="text" id="food-name" placeholder="Enter food name">
+            </div>
+            
+            <div class="input-group">
+                <label for="food-category">Food Category</label>
+                <select id="food-category">
+                    <option value="">Select a category</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="grains">Grains</option>
+                    <option value="proteins">Proteins</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="snacks">Snacks</option>
+                    <option value="beverages">Beverages</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="food-description">Description (Ingredients, Preparation, etc.)</label>
+                <textarea id="food-description" placeholder="Describe the food, its ingredients, and how it's prepared"></textarea>
+            </div>
+            
+            <button class="predict-button" onclick="predictFood()">
+                <i class="fas fa-search"></i> Predict Nutrition
+            </button>
+        </div>
+        
+        <!-- Prediction Results Section -->
+        <div class="prediction-results">
+            <h2>Prediction Results</h2>
+            
+            <div class="results-placeholder" id="results-placeholder">
+                <i class="fas fa-search"></i>
+                <p>Enter food details and click "Predict Nutrition" to see results</p>
+            </div>
+            
+            <div class="food-result" id="food-result">
+                <img src="https://via.placeholder.com/600x300/e8f5e9/2E7D32?text=Food+Image" alt="Food" class="food-image" id="food-image">
+                
+                <div class="food-details">
+                    <h3 class="food-name" id="result-food-name">Food Name</h3>
+                    <p class="food-description" id="result-food-description">Food description will appear here.</p>
+                </div>
+                
+                <div class="nutrition-facts">
+                    <h4>Nutrition Facts</h4>
+                    
+                    <div class="nutrition-item">
+                        <span>Calories</span>
+                        <span id="nutrition-calories">0 kcal</span>
+                    </div>
+                    
+                    <div class="nutrition-item">
+                        <span>Protein</span>
+                        <span id="nutrition-protein">0g</span>
+                    </div>
+                    
+                    <div class="nutrition-item">
+                        <span>Carbohydrates</span>
+                        <span id="nutrition-carbs">0g</span>
+                    </div>
+                    
+                    <div class="nutrition-item">
+                        <span>Fat</span>
+                        <span id="nutrition-fat">0g</span>
+                    </div>
+                    
+                    <div class="nutrition-item">
+                        <span>Fiber</span>
+                        <span id="nutrition-fiber">0g</span>
+                    </div>
+                    
+                    <div class="nutrition-item">
+                        <span>Sugar</span>
+                        <span id="nutrition-sugar">0g</span>
+                    </div>
+                </div>
+                
+                <button class="add-to-meal-button" onclick="addToMeal()">
+                    <i class="fas fa-plus"></i> Add to Today's Meals
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Navigation -->
+    <div class="footer-nav">
+        <h3>Navigation</h3>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="predictor.html">Predictor</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="tips.html">Tips</a></li>
+            <li><a href="meals.html">Meals</a></li>
+            <li><a href="progress.html">Progress</a></li>
+            <li><a href="settings.html">Settings</a></li>
+        </ul>
+    </div>
+
+    <script>
+        // Function to predict food nutrition
+        function predictFood() {
+            const foodName = document.getElementById('food-name').value;
+            const foodCategory = document.getElementById('food-category').value;
+            const foodDescription = document.getElementById('food-description').value;
+            
+            if (!foodName) {
+                alert('Please enter a food name');
+                return;
+            }
+            
+            // Hide placeholder and show results
+            document.getElementById('results-placeholder').style.display = 'none';
+            document.getElementById('food-result').style.display = 'block';
+            
+            // Set food name and description
+            document.getElementById('result-food-name').textContent = foodName;
+            document.getElementById('result-food-description').textContent = 
+                foodDescription || 'No description provided.';
+            
+            // Generate random nutrition values based on category
+            const nutritionValues = generateNutritionValues(foodCategory);
+            
+            // Update nutrition facts
+            document.getElementById('nutrition-calories').textContent = `${nutritionValues.calories} kcal`;
+            document.getElementById('nutrition-protein').textContent = `${nutritionValues.protein}g`;
+            document.getElementById('nutrition-carbs').textContent = `${nutritionValues.carbs}g`;
+            document.getElementById('nutrition-fat').textContent = `${nutritionValues.fat}g`;
+            document.getElementById('nutrition-fiber').textContent = `${nutritionValues.fiber}g`;
+            document.getElementById('nutrition-sugar').textContent = `${nutritionValues.sugar}g`;
+            
+            // Update food image based on category
+            updateFoodImage(foodCategory);
+        }
+        
+        // Function to generate nutrition values based on category
+        function generateNutritionValues(category) {
+            // Base values for different categories
+            const baseValues = {
+                fruits: { calories: 80, protein: 1, carbs: 20, fat: 0, fiber: 3, sugar: 15 },
+                vegetables: { calories: 50, protein: 2, carbs: 10, fat: 0, fiber: 4, sugar: 5 },
+                grains: { calories: 120, protein: 4, carbs: 25, fat: 1, fiber: 2, sugar: 1 },
+                proteins: { calories: 180, protein: 20, carbs: 2, fat: 10, fiber: 0, sugar: 0 },
+                dairy: { calories: 150, protein: 8, carbs: 12, fat: 8, fiber: 0, sugar: 10 },
+                snacks: { calories: 250, protein: 3, carbs: 30, fat: 12, fiber: 2, sugar: 15 },
+                beverages: { calories: 120, protein: 0, carbs: 30, fat: 0, fiber: 0, sugar: 28 }
+            };
+            
+            // Default values if no category selected
+            const defaults = { calories: 200, protein: 5, carbs: 25, fat: 8, fiber: 2, sugar: 10 };
+            
+            const base = category && baseValues[category] ? baseValues[category] : defaults;
+            
+            // Add some random variation (±20%)
+            return {
+                calories: Math.round(base.calories * (0.8 + Math.random() * 0.4)),
+                protein: Math.round(base.protein * (0.8 + Math.random() * 0.4) * 10) / 10,
+                carbs: Math.round(base.carbs * (0.8 + Math.random() * 0.4) * 10) / 10,
+                fat: Math.round(base.fat * (0.8 + Math.random() * 0.4) * 10) / 10,
+                fiber: Math.round(base.fiber * (0.8 + Math.random() * 0.4) * 10) / 10,
+                sugar: Math.round(base.sugar * (0.8 + Math.random() * 0.4) * 10) / 10
+            };
+        }
+        
+        // Function to update food image based on category
+        function updateFoodImage(category) {
+            const image = document.getElementById('food-image');
+            const categoryNames = {
+                fruits: 'Fruits',
+                vegetables: 'Vegetables',
+                grains: 'Grains',
+                proteins: 'Proteins',
+                dairy: 'Dairy',
+                snacks: 'Snacks',
+                beverages: 'Beverages'
+            };
+            
+            const categoryName = categoryNames[category] || 'Food';
+            image.src = `https://via.placeholder.com/600x300/e8f5e9/2E7D32?text=${encodeURIComponent(categoryName)}`;
+            image.alt = categoryName;
+        }
+        
+        // Function to add predicted food to meals
+        function addToMeal() {
+            const foodName = document.getElementById('result-food-name').textContent;
+            alert(`"${foodName}" has been added to your meals!`);
+            // In a real application, this would save to a database or update state
+        }
+    </script>
+</body>
+</html>

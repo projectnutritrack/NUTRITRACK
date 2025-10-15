@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriTrack - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8faf8;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+         .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+        
+        .logo-img img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav li {
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        
+        nav li:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        nav li.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-actions button {
+            background: white;
+            color: #2E7D32;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-actions button:hover {
+            background: #e8f5e9;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content Styles */
+        .dashboard {
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            gap: 30px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+        
+        .sidebar h2 {
+            color: #2E7D32;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8f5e9;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+            color: #555;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        
+        .sidebar-menu li:hover {
+            color: #2E7D32;
+        }
+        
+        .sidebar-menu i {
+            width: 24px;
+            text-align: center;
+            color: #2E7D32;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .date-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .date-section h2 {
+            color: #2E7D32;
+            font-size: 28px;
+        }
+        
+        .date-display {
+            font-weight: 500;
+            color: #777;
+            font-size: 18px;
+        }
+        
+        /* Stats Overview */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: #e8f5e9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+        }
+        
+        .stat-icon i {
+            font-size: 24px;
+            color: #2E7D32;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2E7D32;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #777;
+            font-size: 16px;
+        }
+        
+        /* Progress Charts */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .chart-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-header h3 {
+            font-size: 20px;
+            color: #2E7D32;
+        }
+        
+        .chart-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2E7D32;
+            font-weight: 600;
+        }
+        
+        /* Recent Meals */
+        .recent-meals {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .meals-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .meals-header h3 {
+            font-size: 20px;
+            color: #2E7D32;
+        }
+        
+        .view-all {
+            color: #2E7D32;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .meals-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .meals-table th, .meals-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .meals-table th {
+            color: #2E7D32;
+            font-weight: 600;
+        }
+        
+        .meals-table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .meal-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .breakfast {
+            background: #e8f5e9;
+            color: #2E7D32;
+        }
+        
+        .lunch {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .dinner {
+            background: #fbe9e7;
+            color: #d84315;
+        }
+        
+        /* Footer */
+        footer {
+            background: #2E7D32;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .date-section {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav li {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .user-actions button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .meals-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+               <div class="logo">
+            <div class="logo-img">
+                <img src="logobig-removebg.png" alt="NutriTrack Logo">
+            </div>
+            <h1>NUTRITRACK</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li onclick="window.location.href='home.html'">Home</li>
+                <li onclick="window.location.href='predictor.html'">Predictor</li>
+                <li class="active">Dashboard</li>
+                <li>Tips</li>
+            </ul>
+        </nav>
+        
+        <div class="user-actions">
+            <button><i class="fas fa-user"></i> My Profile</button>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Weekly Overview</h2>
+            <ul class="sidebar-menu">
+                <li><i class="fas fa-chart-line"></i> Weekly Progress</li>
+                <li><i class="fas fa-weight"></i> Weight Tracking</li>
+                <li><i class="fas fa-trophy"></i> Achievements</li>
+                <li><i class="fas fa-bullseye"></i> Goals</li>
+                <li><i class="fas fa-history"></i> Meal History</li>
+            </ul>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Date Section -->
+            <div class="date-section">
+                <h2>DASHBOARD</h2>
+                <div class="date-display">Monday, October 16, 2023</div>
+            </div>
+            
+            <!-- Stats Overview -->
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-value">1,250</div>
+                    <div class="stat-label">Calories Today</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <div class="stat-value">78%</div>
+                    <div class="stat-label">Nutrition Score</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Goals Completed</div>
+                </div>
+            </div>
+            
+            <!-- Progress Charts -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Weekly Calorie Intake</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        Calorie Intake Chart
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Macronutrient Distribution</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        Macronutrient Chart
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Meals -->
+            <div class="recent-meals">
+                <div class="meals-header">
+                    <h3>Recent Meals</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                
+                <table class="meals-table">
+                    <thead>
+                        <tr>
+                            <th>Meal</th>
+                            <th>Time</th>
+                            <th>Calories</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Oatmeal with Berries</td>
+                            <td>8:30 AM</td>
+                            <td>320</td>
+                            <td><span class="meal-type breakfast">Breakfast</span></td>
+                        </tr>
+                        <tr>
+                            <td>Grilled Chicken Salad</td>
+                            <td>12:45 PM</td>
+                            <td>420</td>
+                            <td><span class="meal-type lunch">Lunch</span></td>
+                        </tr>
+                        <tr>
+                            <td>Protein Shake</td>
+                            <td>4:00 PM</td>
+                            <td>180</td>
+                            <td><span class="meal-type lunch">Snack</span></td>
+                        </tr>
+                        <tr>
+                            <td>Baked Salmon with Veggies</td>
+                            <td>7:15 PM</td>
+                            <td>480</td>
+                            <td><span class="meal-type dinner">Dinner</span></td>
+                        </tr>
+                        <tr>
+                            <td>Greek Yogurt</td>
+                            <td>9:30 PM</td>
+                            <td>120</td>
+                            <td><span class="meal-type dinner">Snack</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 NutriTrack - Nutrition Tracking App. All rights reserved.</p>
+    </footer>
+</body>
+</html>

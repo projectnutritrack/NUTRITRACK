@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriTrack - Nutrition Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8faf8;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border-radius: 50%;
+            padding: 5px;
+        }
+        
+        .logo-img img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav li {
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+        
+        nav li:hover {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+        
+        nav li.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-actions button {
+            background: white;
+            color: #2E7D32;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-actions button:hover {
+            background: #e8f5e9;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Content Styles */
+        .dashboard {
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            gap: 30px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+        
+        .sidebar h2 {
+            color: #2E7D32;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8f5e9;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+            color: #555;
+            transition: color 0.3s;
+        }
+        
+        .sidebar-menu li:hover {
+            color: #2E7D32;
+            cursor: pointer;
+        }
+        
+        .sidebar-menu i {
+            width: 24px;
+            text-align: center;
+            color: #2E7D32;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .date-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .date-section h2 {
+            color: #2E7D32;
+            font-size: 28px;
+        }
+        
+        .date-display {
+            font-weight: 500;
+            color: #777;
+            font-size: 18px;
+        }
+        
+        /* Stats Container */
+        .stats-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .stats-header h3 {
+            font-size: 24px;
+            color: #2E7D32;
+        }
+                /* Motivation Quote Styles */
+        .motivation-quote {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .quote-text {
+            font-size: 18px;
+            font-style: italic;
+            color: #2E7D32;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .quote-author {
+            font-weight: 600;
+            color: #1B5E20;
+        }
+        
+        .quote-icon {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quote-icon i {
+            color: #2E7D32;
+            font-size: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .calories-card {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .calories-card h4 {
+            font-size: 20px;
+            color: #2E7D32;
+            margin-bottom: 20px;
+        }
+        
+        .calories-display {
+            font-size: 42px;
+            font-weight: 700;
+            color: #2E7D32;
+            margin-bottom: 10px;
+        }
+        
+        .calories-goal {
+            color: #777;
+            font-size: 18px;
+        }
+        
+        .macronutrients {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .macro-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .macro-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .macro-header h5 {
+            font-size: 18px;
+            color: #2E7D32;
+        }
+        
+        .macro-value {
+            font-weight: 600;
+            color: #2E7D32;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+        }
+        
+        .carbs-fill {
+            width: 40%;
+            background: #4CAF50;
+        }
+        
+        .protein-fill {
+            width: 50%;
+            background: #2E7D32;
+        }
+        
+        .fat-fill {
+            width: 30%;
+            background: #8BC34A;
+        }
+        
+        /* Meals Section */
+        .meals-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .meal-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8f5e9;
+        }
+        
+        .meal-header h3 {
+            font-size: 22px;
+            color: #2E7D32;
+        }
+        
+        .add-button {
+            background: #2E7D32;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .add-button:hover {
+            background: #1B5E20;
+            transform: rotate(90deg);
+        }
+        
+        .food-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-height: 150px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px 0;
+            font-style: italic;
+        }
+        
+        .food-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .food-item:hover {
+            background: #e8f5e9;
+            transform: translateX(5px);
+        }
+        
+        .food-name {
+            font-weight: 500;
+        }
+        
+        .food-calories {
+            color: #2E7D32;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            background: #2E7D32;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .meals-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .meals-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .date-section {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav li {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .user-actions button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+                <div class="logo">
+            <div class="logo-img">
+                <img src="logobig-removebg.png" alt="NutriTrack Logo">
+            </div>
+            <h1>NUTRITRACK</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li onclick="window.location.href='home.html'">Home</li>
+                <li onclick="window.location.href='predictor.html'">Predictor</li>
+                <li onclick="window.location.href='dashboard.html'">Dashboard</li>
+                <li>Tips</li>
+            </ul>
+        </nav>        
+        <div class="user-actions">
+            <button><i class="fas fa-user"></i> My Profile</button>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+               <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Daily Motivation</h2>
+            <div class="motivation-quote">
+                <p class="quote-text">"Take care of your body. It's the only place you have to live."</p>
+                <p class="quote-author">- Jim Rohn</p>
+                <div class="quote-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Date Section -->
+            <div class="date-section">
+                <h2>TODAY</h2>
+                <div class="date-display">Monday, October 16, 2023</div>
+            </div>
+            
+            <!-- Stats Container -->
+            <div class="stats-container">
+                <div class="stats-header">
+                    <h3>TOTAL CALORIES</h3>
+                    <div class="view-options">
+                        <i class="fas fa-chart-bar"></i>
+                        <i class="fas fa-list"></i>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <!-- Calories Card -->
+                    <div class="calories-card">
+                        <h4>CALORIES CONSUMED</h4>
+                        <div class="calories-display">0 / 2000</div>
+                        <div class="calories-goal">CALORIES EATEN</div>
+                    </div>
+                    
+                    <!-- Macronutrients -->
+                    <div class="macronutrients">
+                        <div class="macro-item">
+                            <div class="macro-header">
+                                <h5>CARBS</h5>
+                                <div class="macro-value">0%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill carbs-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="macro-item">
+                            <div class="macro-header">
+                                <h5>PROTEIN</h5>
+                                <div class="macro-value">0%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill protein-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="macro-item">
+                            <div class="macro-header">
+                                <h5>FAT</h5>
+                                <div class="macro-value">0%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill fat-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Meals Section -->
+            <div class="meals-container">
+                <!-- Breakfast Card -->
+                <div class="meal-card">
+                    <div class="meal-header">
+                        <h3>BREAKFAST</h3>
+                        <button class="add-button">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <ul class="food-list">
+                        <li class="empty-state">No food items added yet</li>
+                    </ul>
+                </div>
+                
+                <!-- Lunch Card -->
+                <div class="meal-card">
+                    <div class="meal-header">
+                        <h3>LUNCH</h3>
+                        <button class="add-button">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <ul class="food-list">
+                        <li class="empty-state">No food items added yet</li>
+                    </ul>
+                </div>
+                
+                <!-- Dinner Card -->
+                <div class="meal-card">
+                    <div class="meal-header">
+                        <h3>DINNER</h3>
+                        <button class="add-button">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <ul class="food-list">
+                        <li class="empty-state">No food items added yet</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 NutriTrack - Nutrition Tracking App. All rights reserved.</p>
+    </footer>
+
+     <script>
+        // Simple animation for progress bars
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add current date
+            const dateElement = document.querySelector('.date-display');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date();
+            dateElement.textContent = today.toLocaleDateString('en-US', options);
+            
+            // Add click event to add buttons - navigate to predictor page
+            const addButtons = document.querySelectorAll('.add-button');
+            addButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Navigate to predictor.html when plus button is clicked
+                    window.location.href = 'predictor.html';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

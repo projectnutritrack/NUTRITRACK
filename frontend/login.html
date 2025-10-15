@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriTrack Login</title>
+  <style>
+    /* Page base */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eaffd5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Card Container */
+    .container {
+      background: #ffffff;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    /* Logo */
+    .logo img {
+      width: 190px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    /* Title */
+    h1 {
+      
+      font-size: 24px;
+      margin: 10px 0 30px;
+      color: #2c4c2b;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    /* Input Fields */
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 18px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    /* SignUp Link */
+    .signup {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .signup a {
+      color: #2c7a2c;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .signup a:hover {
+      text-decoration: underline;
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+     
+      <img src="logobig-removebg.png" alt="NutriTrack Logo">
+    </div>
+   <form action="home.html" method="get">
+  <input type="text" class="form-input" placeholder="USERNAME" required>
+  <input type="password" class="form-input" placeholder="PASSWORD" required>
+  <button type="submit" class="btn">LOGIN</button>
+</form>
+
+    <div class="signup">
+      Don’t have an account? <a href="signup.html">SignUp</a>
+    </div>
+  </div>
+</body>
+</html>
+
