@@ -22,5 +22,5 @@ Many people are unaware of the calorie content of the food they consume daily. N
 3. The model predicts the estimated calorie value.
 4. The result is displayed instantly to the user.
 
-## Project Structure
+
 
